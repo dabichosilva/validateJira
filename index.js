@@ -5,7 +5,8 @@ const JiraApi = require('jira-client')
 try {
     const statusMatchInput = core.getInput('expected_status');
 
-    const search = github.context.ref;
+    // const search = github.context.ref;
+    const search = GITHUB_REF;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     console.log(`Searching "${search}" for Jira issue number.`)
