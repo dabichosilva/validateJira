@@ -6,7 +6,7 @@ try {
     const statusMatchInput = core.getInput('expected_status');
 
     // const search = github.context.ref;
-    const search = GITHUB_REF;
+    const search = github.ref_name;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     console.log(`Searching "${search}" for Jira issue number.`)
