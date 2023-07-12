@@ -3,9 +3,10 @@ const github = require('@actions/github')
 const JiraApi = require('jira-client')
 
 try {
+    const issueNumberInput = core.getInput('ticket_id');
     const statusMatchInput = core.getInput('expected_status');
 
-    const search = github.context.ref;
+    const search = issueNumberInput ? issueNumberInput : github.context.ref;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     console.log(`Searching "${search}" for Jira issue number.`)
