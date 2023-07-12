@@ -5,12 +5,11 @@ const JiraApi = require('jira-client')
 try {
     const statusMatchInput = core.getInput('expected_status');
 
-    // const search = github.context.ref;
-    const search = github.ref_name;
+    const search = github.context.ref;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     console.log(`Searching "${search}" for Jira issue number.`)
-    console.log(`github.context "${github.context}"`)
+    console.log(`github.context.ref_name "${github.context}"`)
 
     const match = search.match(/([A-Za-z]{2,4}-\d{1,})/g)
     const issueNumber = match ? match[0] : null
