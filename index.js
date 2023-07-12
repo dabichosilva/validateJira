@@ -9,8 +9,8 @@ try {
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     console.log(`Searching "${search}" for Jira issue number.`)
-    console.log(`github.context.ref_name "${github.context.ref_name}"`)
-    console.log(`github.ref "${github.ref}"`)
+    console.log(`github.context.head_ref "${github.context.head_ref}"`)
+    console.log(`github.base_ref "${github.base_ref}"`)
 
     const match = search.match(/([A-Za-z]{2,4}-\d{1,})/g)
     const issueNumber = match ? match[0] : null
