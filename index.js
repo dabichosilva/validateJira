@@ -45,7 +45,7 @@ try {
         })
         .catch(err => {
             console.error(err);
-            core.setFailed(error.message);
+            core.setFailed(err.message);
         });
 } catch (error) {
     core.setFailed(error.message);
