@@ -5,8 +5,6 @@ const JiraApi = require('jira-client')
 try {
     const issueNumberInput = core.getInput('ticket_id');
     const statusMatchInput = core.getInput('expected_status');
-    console.log(`issueNumberInput = [${issueNumberInput}]`)
-    console.log(`statusMatchInput = [${statusMatchInput}]`)
 
     const search = issueNumberInput ? issueNumberInput : process.env.GITHUB_HEAD_REF;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
@@ -15,8 +13,7 @@ try {
     const targetBranchPrefix = "release/v0.0."
     const fixVersionsPrefix = "App v"
 
-    console.log(`Searching "${search}" for Jira issue number.`)
-    console.log(`updated this job`)
+    console.log(`Searching branch "${search}" for Jira issue number.`)
 
     const match = search.match(/([A-Za-z]{2,4}-\d{1,})/g)
     const issueNumber = match ? match[0] : null
@@ -52,8 +49,6 @@ try {
 
             const fixVersionsFound = issue.fields.fixVersions[0].name;
             const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
-            console.log (`fixVersionsFound = ${fixVersionsFound}`)
-            console.log (`formattedFixVersions = ${formattedFixVersions}`)
             
             if (targetBranch !== formattedFixVersions) {
                 core.setFailed(`Incorrect or empty Fix Versions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
