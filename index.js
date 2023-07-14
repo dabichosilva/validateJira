@@ -36,12 +36,29 @@ try {
     jira.findIssue(issueNumber)
         .then(issue => {
             const statusFound = issue.fields.status.name;
+            
             console.log(`Status: ${statusFound}`);
             core.setOutput("status", statusFound);
 
             if (statusFound !== statusMatch) {
-                core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}".`);
+                core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}". We can't continue.`);
+            } else {
+                console.log(`Status of the ticket "${issueNumber}" is "${statusFound}", it is ok to continue.`);
             }
+
+            const fixVersionsFound = issue.fields.fixVersions[0].name;
+            const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
+            console.log (`fixVersionsFound = ${fixVersionsFound}`)
+            console.log (`formattedFixVersions = ${formattedFixVersions}`)
+            
+            if (targetBranch !== formattedFixVersions) {
+                core.setFailed(`Incorrect or empty Fix Versions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
+            } else {
+                console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
+            }
+
+            console.log (`Jira related check passed!`)
+
         })
         .catch(err => {
             console.error(err);
