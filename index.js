@@ -11,6 +11,10 @@ try {
     const search = issueNumberInput ? issueNumberInput : process.env.GITHUB_HEAD_REF;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
+    const targetBranch = process.env.GITHUB_BASE_REF
+    const targetBranchPrefix = "release/v0.0."
+    const fixVersionsPrefix = "App v"
+
     console.log(`Searching "${search}" for Jira issue number.`)
     console.log(`updated this job`)
 
