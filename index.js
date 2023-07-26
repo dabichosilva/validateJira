@@ -15,7 +15,7 @@ try {
 
     console.log(`Searching branch "${search}" for Jira issue number.`)
 
-    const match = search.match(/([A-Za-z]{2,4}-\d{1,})/g)
+    const match = search.match(/([A-Za-z]{2,7}-\d{1,})/g)
     const issueNumber = match ? match[0] : null
 
     if (!issueNumber) {
