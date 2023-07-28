@@ -3,6 +3,7 @@ const github = require('@actions/github')
 const JiraApi = require('jira-client')
 
 try {
+    let success = true
     const issueNumberInput = core.getInput('ticket_id');
     const statusMatchInput = core.getInput('expected_status');
 
@@ -19,6 +20,7 @@ try {
     const issueNumber = match ? match[0] : null
 
     if (!issueNumber) {
+        success = false
         return core.setFailed('No issue number found. Assuming not ready.');
     }
 
@@ -42,6 +44,7 @@ try {
             core.setOutput("status", statusFound);
 
             if (statusFound !== statusMatch) {
+                success = false
                 core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}". We can't continue.`);
             } else {
                 console.log(`Status of the ticket "${issueNumber}" is "${statusFound}", it is ok to continue.`);
@@ -51,6 +54,7 @@ try {
             const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
             
             if (targetBranch !== formattedFixVersions) {
+                success = false
                 core.setFailed(`Incorrect or empty Fix Versions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
             } else {
                 console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
