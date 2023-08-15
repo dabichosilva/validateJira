@@ -52,7 +52,7 @@ try {
 
             if (issue.fields.fixVersions[0] == null){
                 success = false
-                core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}". We can't continue.`);
+                core.setFailed(`FixVersions is not set in the Jira ticket ${issueNumber}`)
             } else {
                 const fixVersionsFound = issue.fields.fixVersions[0].name;
                 const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
