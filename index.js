@@ -45,22 +45,28 @@ try {
 
             if (statusFound !== statusMatch) {
                 success = false
-                core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}". We can't continue.`);
+                
             } else {
                 console.log(`Status of the ticket "${issueNumber}" is "${statusFound}", it is ok to continue.`);
             }
 
-            const fixVersionsFound = issue.fields.fixVersions[0].name;
-            const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
-            
-            if (targetBranch !== formattedFixVersions) {
+            if (issue.fields.fixVersions[0] == null){
                 success = false
-                core.setFailed(`Incorrect or empty Fix Versions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
+                core.setFailed(`Status must be "${statusMatch}". Found "${statusFound}". We can't continue.`);
             } else {
-                console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
+                const fixVersionsFound = issue.fields.fixVersions[0].name;
+                const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
+                
+                if (targetBranch !== formattedFixVersions) {
+                    success = false
+                    core.setFailed(`Incorrect or empty Fix Versions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
+                } else {
+                    console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
+                }
             }
 
-            console.log (`Jira related check passed!`)
+
+            if (success) console.log (`Jira related check passed!`)
 
         })
         .catch(err => {
