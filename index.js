@@ -11,7 +11,7 @@ try {
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
 
     const targetBranch = process.env.GITHUB_BASE_REF
-    const targetBranchPrefix = "release/v0.0."
+    const targetBranchPrefix = "release/v"
     const fixVersionsPrefix = "App v"
 
     console.log(`Searching branch "${search}" for Jira issue number.`)
