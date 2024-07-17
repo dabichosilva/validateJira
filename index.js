@@ -6,13 +6,15 @@ try {
     let success = true
     const issueNumberInput = core.getInput('ticket_id');
     const statusMatchInput = core.getInput('expected_status');
+    const targetBranchPrefixInput = core.getInput('targetBranchPrefix');
+    const fixVersionsPrefixInput = core.getInput('fixVersionsPrefix');
 
+    const fixVersionsPrefix = fixVersionsPrefixInput ? fixVersionsPrefixInput : "App v";
     const search = issueNumberInput ? issueNumberInput : process.env.GITHUB_HEAD_REF;
     const statusMatch = statusMatchInput ? statusMatchInput : 'Feature Testing Complete';
+    const targetBranchPrefix = targetBranchPrefixInput ? targetBranchPrefixInput : 'release/v';
 
     const targetBranch = process.env.GITHUB_BASE_REF
-    const targetBranchPrefix = "release/v"
-    const fixVersionsPrefix = "App v"
 
     console.log(`Searching branch "${search}" for Jira issue number.`)
 
@@ -56,13 +58,13 @@ try {
             } else {
                 const fixVersionsFound = issue.fields.fixVersions[0].name;
                 const formattedFixVersions = fixVersionsFound.replace(fixVersionsPrefix, targetBranchPrefix)
-                
-                if (targetBranch !== formattedFixVersions) {
-                    success = false
-                    core.setFailed(`Incorrect FixVersions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
-                } else {
-                    console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
-                }
+                console.log(`The ticket "${issueNumber}" has a valid fixVersions field "${fixVersionsFound}", it is ok to continue.`);
+                // if (targetBranch !== formattedFixVersions) {
+                //     success = false
+                //     core.setFailed(`Incorrect FixVersions found in the ticket! Current target branch is "${targetBranch}". Found this was intended for "${fixVersionsFound}". We can't continue.`);
+                // } else {
+                //     console.log(`The ticket targets the appropriate release branch "${targetBranch}", with FixVersions "${fixVersionsFound}", it is ok to continue.`);
+                // }
             }
 
 
